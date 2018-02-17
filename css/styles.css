@@ -1,0 +1,41 @@
+Body {
+    background-color: #f0f3f3;
+    width: 400px;
+    margin: 4% auto;
+    font-family: sans-serif;
+}
+
+#movieEditArea {
+    background-color: white;
+    display: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 1px;
+    height: 250px;
+    width: 300px;
+}
+
+#movieDisplayArea {
+    background-color: white;
+    display: block;
+    padding-left: 20px;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 1px;
+    height: 270px;
+    width: 500px;
+}
+
+#createBtn {
+    display: inline;
+}
+
+#nameError, #yearError, #genreError, #ratingError, #watchedError {
+    display: none;
+    color: red;
+}
+
+#movie {
+    display: none;
+    float: right;
+}

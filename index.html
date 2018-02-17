@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Movies</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
+    <script src="scripts/controller.js"></script>
+    <script src="scripts/model.js"></script>
+</head>
+<body>
+    <div id="movieEditArea">
+        <h1 id="formTitle"></h1>
+        <form name="editForm">
+            Movie Name
+            <input type = "text" name = "nameEdit" placeholder = "Movie Name Here"/>
+            <p id="nameError">&nbsp;</p><br/>
+            Year Released
+            <input type = "text" name = "yearEdit" placeholder = "Year Released Here"/>
+            <p id="yearError">&nbsp;</p><br/>
+            Rating<br/>
+            <label><input type = "radio" name = "rating" value ="G" id = "GRated"/>G</label>
+            <label><input type = "radio" name = "rating" value = "PG" id = "PGRated" />PG</label>
+            <label><input type = "radio" name = "rating" value = "PG-13" id = "PG13Rated" />PG-13</label>
+            <label><input type = "radio" name = "rating" value = "R" id = "RRated" />R</label>
+            <p id = "ratingError">&nbsp;</p><br/>
+            Genre<br/>
+            <select name = "movieGenre">
+                <option value = "comedy" selected="selected">Comedy</option>
+                <option value = "drama">Drama</option>
+                <option value = "action">Action</option>
+                <option value = "romance">Romance</option>
+                <option value = "animation">Animation</option>
+                <option value = "western">Western</option>
+                <option value = "scienceFiction">Science Fiction</option>
+            </select>
+            <p id = "genreError">&nbsp;</p><br/>
+            <input type = "checkbox" name = "watched" id = "watchedMovie"/>
+            <label for = "watched">Have you seen this movie?</label>
+            <p id = "watchedError">&nbsp;</p><br/>
+            <button type = "button" id = "createBtn">Create</button>
+            <button type = "button" id = "cancelBtn">Cancel</button>
+            </form>
+    </div>
+    <div id="movieDisplayArea">
+            <h1>Movie Creation</h1>
+            <button type = "button" id ="newBtn">New Movie</button>
+        <table border = "1" id="movieTable">
+             <tr>
+                <th>Date Released</th>
+                <th>Movie Name</th>
+                <th>Movie Genre</th>
+             </tr>
+        </table>
+
+    </div>
+    <script>
+        onPageLoad();    
+    </script>
+</body>
+</html>
