@@ -30,6 +30,10 @@ Body {
     display: inline;
 }
 
+#updateBtn {
+    display: inline;
+}
+
 #nameError, #yearError, #genreError, #ratingError, #watchedError {
     display: none;
     color: red;

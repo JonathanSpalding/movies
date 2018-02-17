@@ -45,12 +45,63 @@ function onNewBtnClicked() {
     // Hide the form, show the movie list.
     document.getElementById('movieEditArea').style.display =' block';
     document.getElementById('movieDisplayArea').style.display = "none";
-    document.getElementById('createBtn').style.display = "block";
+    document.getElementById('createBtn').style.display = "inline";
+    document.getElementById('updateBtn').style.display = "none";
 }
 
 ///////////////////////////////////////
 function onCancelBtnClicked() {
     clearInputForm();
+}
+
+///////////////////////////////////////
+function onEditBtnClicked(id) {
+    // call the getItemByID method to fetch the correct record. If there is no matching id then pring a debug message to the console and return.
+    gtItemByID(id);
+
+    // Populate all the controls on the input form using values from the record.
+
+    // Wire up the click handler for the update button.
+
+    // Hide the list of items.
+
+    // Show the input form.
+
+    // Hide the Create button and show the Update button.
+    document.getElementById('createBtn').style.display = "none";
+    document.getElementById('updateBtn').style.display = "inline";
+
+    // Set the Update button's onclick handler
+    var updateBtn = document.getElementById("updateBtn");
+    updateBtn.onclick = function () { 
+        onUpdateBtnClicked(movie.id) 
+    };
+}
+
+///////////////////////////////////////
+// Gets data fom the form, validates it, saves it to the model, and then updates the list.
+function onUpdateBtnClicked(id) {
+    // Validate input from all the controls.
+
+    // Copy the data from the form controls.
+    // Call into the model to update the record, using the id that was passed in.
+    // Make necessare changes to the row in the table.
+    // Hide the input form.
+    // Show the list of items.
+    var tr = document.getElementById('row' + id);
+    tr.childNotes[0].innerHTML = movie.year;
+    tr.childNotes[1].innerHTML = movie.name;
+    tr.childNotes[2].innerHTML = movie.genre;
+}
+
+///////////////////////////////////////
+function onDeleteBtnClicked(id) {
+    // Call the model to get the record that matches the id and if the record doesn't exit then print an error to the console.
+
+    // Prompt the user for confirmation. If the user clicks the cancel button then return.
+    //remove the row
+    var tr = document.getElementById('row' + id);
+    tr.remove();
 }
 
 ///////Business Logic/////////////
@@ -134,7 +185,22 @@ function addTableItem(movie) {
     } else if (movie.genre == 5) {
         cell.innerHTML = "Western";
     } else cell.innerHTML = "Science Fiction";
+
+    cell = row.insertCell(3);
+    cell.innerHTML = "<button type='button' id='btnEdit" + movie.id + "'>Edit</button>";
+    cell = row.insertCell(3);
+    cell.innerHTML = "<button type = 'button' id = 'btnDelete" + movie.id + "'>Delete</button>";
+    
+    // Wire up handlers for the new buttons. 
+    document.getElementById('btnEdit' + movie.id).onclick = function() {
+        onEditBtnClicked(movie.id);
+    };
+    document.getElementById('btnDelete' + movie.id).onclick = function() {
+        onDeleteBtnClicked(movie.id);
+    };
 }
+
+
 
 function clearInputForm() {
     // Hide the form, show the movie list.
