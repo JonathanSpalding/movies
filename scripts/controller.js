@@ -24,7 +24,6 @@ function onCreateBtnClicked() {
     var form = document.forms["editForm"];
     var newMovie = modelCreateMovie(
         form.nameEdit.value,
-        //form.yearEdit.value,
         form.rating.checked,
         form.movieGenre.selectedIndex,
         form.watched.checked,
@@ -54,54 +53,70 @@ function onCancelBtnClicked() {
     clearInputForm();
 }
 
+// Had to take this function out of the model because id was always returning undefined.
+function modelGetMovie(id) {
+    for (x in movieList) {
+        if (movieList[x].id === id) {
+            //return movieList[x];
+            return x;
+        }
+    }
+    return undefined;
+}
+
 ///////////////////////////////////////
-function onEditBtnClicked(id) {
+function onEditBtnClicked(movie) {
+    var form = document.forms["editForm"];
     // call the getItemByID method to fetch the correct record. If there is no matching id then pring a debug message to the console and return.
-    gtItemByID(id);
-
+    var movieNumber = modelGetMovie(movie);
     // Populate all the controls on the input form using values from the record.
-
-    // Wire up the click handler for the update button.
-
-    // Hide the list of items.
-
-    // Show the input form.
-
+    form.nameEdit.value = movieList[movieNumber].name;
+    form.yearEdit.value = movieList[movieNumber].year;
+    //form.rating.value = movieList[movieNumber].rating;
+    form.movieGenre.selectedIndex = movieList[movieNumber].genre;
     // Hide the Create button and show the Update button.
+    document.getElementById('movieEditArea').style.display =' block';
+    document.getElementById('movieDisplayArea').style.display = "none";
     document.getElementById('createBtn').style.display = "none";
     document.getElementById('updateBtn').style.display = "inline";
-
     // Set the Update button's onclick handler
     var updateBtn = document.getElementById("updateBtn");
     updateBtn.onclick = function () { 
-        onUpdateBtnClicked(movie.id) 
+        onUpdateBtnClicked(movie.id)
     };
 }
 
 ///////////////////////////////////////
 // Gets data fom the form, validates it, saves it to the model, and then updates the list.
 function onUpdateBtnClicked(id) {
-    // Validate input from all the controls.
-
-    // Copy the data from the form controls.
-    // Call into the model to update the record, using the id that was passed in.
-    // Make necessare changes to the row in the table.
-    // Hide the input form.
-    // Show the list of items.
+    // Validate the data in all the controls.
+    if (!validateControls())
+        return;
     var tr = document.getElementById('row' + id);
-    tr.childNotes[0].innerHTML = movie.year;
-    tr.childNotes[1].innerHTML = movie.name;
-    tr.childNotes[2].innerHTML = movie.genre;
+
+    // Get data from the form controls, and create a new movie object.
+    var form = document.forms["editForm"];
+    var newMovie = modelCreateMovie(
+        form.nameEdit.value,
+        form.rating.checked,
+        form.movieGenre.selectedIndex,
+        form.watched.checked,
+        parseInt(form.yearEdit.value));
+
+    // Add the new movie to the view.
+    updateTableItem(newMovie);
+
+    // clear the form and all the errors.
+    clearInputForm()
 }
 
 ///////////////////////////////////////
 function onDeleteBtnClicked(id) {
-    // Call the model to get the record that matches the id and if the record doesn't exit then print an error to the console.
-
-    // Prompt the user for confirmation. If the user clicks the cancel button then return.
-    //remove the row
-    var tr = document.getElementById('row' + id);
+    var deleteRow = confirm("Are you sure you want to delete?");
+    if (deleteRow== true) {
+        var tr = document.getElementById('row' + id);
     tr.remove();
+    }
 }
 
 ///////Business Logic/////////////
@@ -132,7 +147,7 @@ function validateControls() {
         document.getElementById("yearError").innerHTML = "";
 
     // Rating Radio Buttons
-    if (form.GRated.checked == false && form.PGRated.checked == false && form.PG13Rated.checked == false && form.RRated.checked == false) {
+    if (form.GRated.checked === false && form.PGRated.checked == false && form.PG13Rated.checked === false && form.RRated.checked == false) {
         document.getElementById("ratingError").style.display = "inline";
         document.getElementById("ratingError").innerHTML = "Please specify a rating!";
         validated = false;
@@ -140,7 +155,7 @@ function validateControls() {
         document.getElementById("ratingError").innerHTML = "";
 
     // Genre Dropdown
-    if (form.movieGenre.selectedIndex == -1) {
+    if (form.movieGenre.selectedIndex === -1) {
         document.getElementById("genreError").style.display = "inline";
         document.getElementById("genreError").innerHTML = "Please Specify a Movie Genre!";
         validated = false;
@@ -148,7 +163,7 @@ function validateControls() {
         document.getElementById("genreError").innerHTML = "";
 
     // Watched Check Box
-    if (form.watched.checked == true) {
+    if (form.watched.checked === true) {
         document.getElementById("watchedError").style.display = "inline";
         document.getElementById("watchedError").innerHTML = "If you've watched this movie, then it shouldn't be on this list!";
         validated = false;
@@ -160,7 +175,6 @@ function validateControls() {
 
 function addTableItem(movie) {
     var table = document.getElementById("movieTable");
-
     // Make a new row, and set its id attribute.
     var row = table.insertRow(table.rows.length);
     row.id = 'row' + movie.id;
@@ -172,17 +186,17 @@ function addTableItem(movie) {
     cell.innerHTML = movie.sortableName();
 
     cell = row.insertCell(2);
-    if (movie.genre == 0) {
+    if (movie.genre === 0) {
         cell.innerHTML = "Comedy";
-    } else if (movie.genre == 1) {
+    } else if (movie.genre === 1) {
         cell.innerHTML = "Drama";
-    } else if (movie.genre == 2) {
+    } else if (movie.genre === 2) {
         cell.innerHTML = "Action";
-    } else if (movie.genre == 3) {
+    } else if (movie.genre === 3) {
         cell.innerHTML = "Romance";
-    } else if (movie.genre == 4) {
+    } else if (movie.genre === 4) {
         cell.innerHTML = "Animation";
-    } else if (movie.genre == 5) {
+    } else if (movie.genre === 5) {
         cell.innerHTML = "Western";
     } else cell.innerHTML = "Science Fiction";
 
@@ -198,6 +212,40 @@ function addTableItem(movie) {
     document.getElementById('btnDelete' + movie.id).onclick = function() {
         onDeleteBtnClicked(movie.id);
     };
+}
+
+function updateTableItem(movie) {
+
+    var row = movie.id;
+    row = parseInt(row) - 1;
+    row = String(row);
+    row = "row" + row;
+    var tr = row;
+    document.getElementById(tr).childNodes[0].innerHTML = movie.year;
+    document.getElementById(tr).childNodes[1].innerHTML = movie.sortableName();
+    //tr.childNodes[1].innerHTML = movie.sortableName();
+    //tr.childNodes[2].innerHTML = movie.genre;
+
+    /*
+    var table = document.getElementById("movieTable");
+
+    //var row = parseInt(movie.id) - 1000;
+    document.getElementById("movieTable").rows[row].cells[0].innerHTML = movie.year;
+    document.getElementById("movieTable").rows[row].cells[1].innerHTML = movie.sortableName();
+    if (movie.genre === 0) {
+        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Comedy";
+    } else if (movie.genre === 1) {
+        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Drama";
+    } else if (movie.genre === 2) {
+        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Action";
+    } else if (movie.genre === 3) {
+        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Romance";
+    } else if (movie.genre === 4) {
+        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Animation";
+    } else if (movie.genre === 5) {
+        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Western";
+    } else document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Science Fiction";
+    */
 }
 
 

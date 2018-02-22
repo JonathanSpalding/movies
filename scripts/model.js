@@ -40,28 +40,17 @@ function modelGetAllMovies() {
 function modelGetMovie(id) {
     for (x in movieList) {
         if (movieList[x].id === id) {
-            return movieList[x];
+            //return movieList[x];
+            return x;
         }
     }
     return undefined;
 }
-// Function for when the user clicks the edit button.
-GetItemByID = function(id) {
-    // search through the list until a match is found
-
-    // If a match is found, return it. If no match is found, return undefined.
-}
 
 // Function for when the user clicks the Save button.
 UpdateItem = function () {
-    // Search through the list until a record with a matching id is found.
-
-    // Copy the data that was passed in to the updated record.
 }
 
 // Function for when the user clicks the Delete button and then confirms.
 DeleteItem = function(id) {
-    //Search the list for a match.
-
-    // Remove the match from the list.
 }
