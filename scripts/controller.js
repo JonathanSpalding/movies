@@ -2,7 +2,7 @@
 
 //////Page Event Handlers////////
 
-function onPageLoad() {
+$(document).ready(function () {
     document.getElementById('createBtn').onclick = onCreateBtnClicked;
     document.getElementById('cancelBtn').onclick = onCancelBtnClicked;
     document.getElementById("newBtn").onclick = onNewBtnClicked;
@@ -12,7 +12,8 @@ function onPageLoad() {
         addTableItem(items[i]);
 
     clearInputForm();
-}
+});
+
 
 /////////////////////////////////////
 function onCreateBtnClicked() {
@@ -174,6 +175,7 @@ function validateControls() {
 }
 
 function addTableItem(movie) {
+    //var table = $("#movieTable").get(0);
     var table = document.getElementById("movieTable");
     // Make a new row, and set its id attribute.
     var row = table.insertRow(table.rows.length);
