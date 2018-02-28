@@ -12,7 +12,7 @@ Body {
     padding-right: 20px;
     box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
     border-radius: 1px;
-    height: 250px;
+    height: 285px;
     width: 300px;
 }
 
@@ -35,11 +35,11 @@ Body {
 }
 
 #nameError, #yearError, #genreError, #ratingError, #watchedError {
-    display: none;
+    display: inline;
     color: red;
 }
 
 #movie {
-    display: none;
+    display: block;
     float: right;
 }

@@ -1,19 +1,21 @@
 ///////controller/////////
 
 //////Page Event Handlers////////
-
 $(document).ready(function () {
-    document.getElementById('createBtn').onclick = onCreateBtnClicked;
-    document.getElementById('cancelBtn').onclick = onCancelBtnClicked;
-    document.getElementById("newBtn").onclick = onNewBtnClicked;
+    $("#createBtn").click(onCreateBtnClicked);
+    //document.getElementById('createBtn').onclick = onCreateBtnClicked;
+    $("#cancelBtn").click(onCancelBtnClicked);
+    //document.getElementById('cancelBtn').onclick = onCancelBtnClicked;
+    $("#newBtn").click(onNewBtnClicked);
+    //document.getElementById("newBtn").onclick = onNewBtnClicked;
 
     var items = modelGetAllMovies();
-    for (var i = 0; i < items.length; i++) 
+    $(".items").each(function() { 
         addTableItem(items[i]);
+    });
 
     clearInputForm();
 });
-
 
 /////////////////////////////////////
 function onCreateBtnClicked() {
@@ -43,10 +45,10 @@ function onNewBtnClicked() {
     document.getElementById('formTitle').innerHTML = "Add a Movie";
 
     // Hide the form, show the movie list.
-    document.getElementById('movieEditArea').style.display =' block';
-    document.getElementById('movieDisplayArea').style.display = "none";
-    document.getElementById('createBtn').style.display = "inline";
-    document.getElementById('updateBtn').style.display = "none";
+    $("#movieEditArea").show();
+    $("#movieDisplayArea").hide();
+    $("#movieEditArea").show();
+    $("#updateBtn").hide();
 }
 
 ///////////////////////////////////////
@@ -56,13 +58,13 @@ function onCancelBtnClicked() {
 
 // Had to take this function out of the model because id was always returning undefined.
 function modelGetMovie(id) {
-    for (x in movieList) {
+    return undefined;
+    $(".movieList").each(function() { 
         if (movieList[x].id === id) {
-            //return movieList[x];
             return x;
         }
-    }
-    return undefined;
+        return undefined;
+    }); 
 }
 
 ///////////////////////////////////////
@@ -76,15 +78,14 @@ function onEditBtnClicked(movie) {
     //form.rating.value = movieList[movieNumber].rating;
     form.movieGenre.selectedIndex = movieList[movieNumber].genre;
     // Hide the Create button and show the Update button.
-    document.getElementById('movieEditArea').style.display =' block';
-    document.getElementById('movieDisplayArea').style.display = "none";
-    document.getElementById('createBtn').style.display = "none";
-    document.getElementById('updateBtn').style.display = "inline";
+    $("#movieEditArea").show();
+    $("#movieDisplayArea").hide();
+    $("#createBtn").hide();
+    $("#movieEditArea").show();
+    $("#updateBtn").show();
     // Set the Update button's onclick handler
-    var updateBtn = document.getElementById("updateBtn");
-    updateBtn.onclick = function () { 
-        onUpdateBtnClicked(movie.id)
-    };
+    var updateBtn = $("#updateBtn");
+    $(updateBtn).click(function () { onUpdateBtnClicked(movie.id)});
 }
 
 ///////////////////////////////////////
@@ -93,6 +94,7 @@ function onUpdateBtnClicked(id) {
     // Validate the data in all the controls.
     if (!validateControls())
         return;
+    //var tr = $('row' + id);
     var tr = document.getElementById('row' + id);
 
     // Get data from the form controls, and create a new movie object.
@@ -114,9 +116,8 @@ function onUpdateBtnClicked(id) {
 ///////////////////////////////////////
 function onDeleteBtnClicked(id) {
     var deleteRow = confirm("Are you sure you want to delete?");
-    if (deleteRow== true) {
-        var tr = document.getElementById('row' + id);
-    tr.remove();
+    if (deleteRow == true) {
+        $("#row" + id).remove();
     }
 }
 
@@ -127,56 +128,56 @@ function validateControls() {
 
     // Name Textbox
     if (form.nameEdit.value === "") {
-        document.getElementById("nameError").style.display = "inline";
-        document.getElementById("nameError").innerHTML = "Please enter a movie name!";
+        $("#nameError").show();
+        $("#nameError").text("Please enter a movie name!");
         validated = false;
     } else 
-        document.getElementById("nameError").innerHTML = "";
+        $("#nameError").text("");
 
     // year textbox
     if (form.yearEdit.value === "") {
-        document.getElementById("yearError").style.display = "inline";
-        document.getElementById("yearError").innerHTML = "Please enter a year released!";
+        $("#yearError").show();
+        $("#yearError").text("Please enter a year released!");
         validated = false;
     } else if (isNaN(parseInt(form.yearEdit.value))) {
-        document.getElementById("yearError").style.display = "inline";
-        document.getElementById("yearError").innerHTML = "Year must be a number!";
+        $("#yearError").show();
+        $("#yearError").text("Year must be a number!");
     } else if (parseInt(form.yearEdit.value) < 1500 || parseInt(form.yearEdit.value) > 3000) {
-        document.getElementById("yearError").style.display = "inline";
-        document.getElementById("yearEdit").innerHTML = "Year must be an actual year that a movie was released in!";
+        $("#yearError").show();
+        $("#yearError").text("Year must be an actual year that a movie was released in!");
     } else 
-        document.getElementById("yearError").innerHTML = "";
+        $("#yearError").text("");
 
     // Rating Radio Buttons
     if (form.GRated.checked === false && form.PGRated.checked == false && form.PG13Rated.checked === false && form.RRated.checked == false) {
-        document.getElementById("ratingError").style.display = "inline";
-        document.getElementById("ratingError").innerHTML = "Please specify a rating!";
+        $("#ratingError").show();
+        $("#ratingError").text("Please specify a rating!");
         validated = false;
     } else  
-        document.getElementById("ratingError").innerHTML = "";
+    $("#ratingError").text("");
 
     // Genre Dropdown
     if (form.movieGenre.selectedIndex === -1) {
-        document.getElementById("genreError").style.display = "inline";
-        document.getElementById("genreError").innerHTML = "Please Specify a Movie Genre!";
+        $("#genreError").show();
+        $("#genreError").text("Please Specify a Movie Genre!");
         validated = false;
     } else 
-        document.getElementById("genreError").innerHTML = "";
+        $("#genreError").text("");
 
     // Watched Check Box
     if (form.watched.checked === true) {
-        document.getElementById("watchedError").style.display = "inline";
-        document.getElementById("watchedError").innerHTML = "If you've watched this movie, then it shouldn't be on this list!";
+        $("#watchedError").show();
+        $("#genreError").text("If you've watched this movie, then it shouldn't be on this list!");
         validated = false;
     } else {
-        document.getElementById("watchedError").innerHTML = "";
+        $("#genreError").text("");
     }
     return validated;
 }
 
 function addTableItem(movie) {
-    //var table = $("#movieTable").get(0);
-    var table = document.getElementById("movieTable");
+    var table = $("#movieTable").get(0);
+    //var table = document.getElementById("movieTable");
     // Make a new row, and set its id attribute.
     var row = table.insertRow(table.rows.length);
     row.id = 'row' + movie.id;
@@ -189,7 +190,8 @@ function addTableItem(movie) {
 
     cell = row.insertCell(2);
     if (movie.genre === 0) {
-        cell.innerHTML = "Comedy";
+        $("#movieTable td:contains('a')").html("hello");  
+        //cell.innerHTML = "Comedy";
     } else if (movie.genre === 1) {
         cell.innerHTML = "Drama";
     } else if (movie.genre === 2) {
@@ -208,12 +210,8 @@ function addTableItem(movie) {
     cell.innerHTML = "<button type = 'button' id = 'btnDelete" + movie.id + "'>Delete</button>";
     
     // Wire up handlers for the new buttons. 
-    document.getElementById('btnEdit' + movie.id).onclick = function() {
-        onEditBtnClicked(movie.id);
-    };
-    document.getElementById('btnDelete' + movie.id).onclick = function() {
-        onDeleteBtnClicked(movie.id);
-    };
+    $('#btnEdit' + movie.id).click(function() { onEditBtnClicked(movie.id) });
+    $('#btnDelete' + movie.id).click(function() { onDeleteBtnClicked(movie.id) });
 }
 
 function updateTableItem(movie) {
@@ -223,57 +221,34 @@ function updateTableItem(movie) {
     row = String(row);
     row = "row" + row;
     var tr = row;
+    
     document.getElementById(tr).childNodes[0].innerHTML = movie.year;
     document.getElementById(tr).childNodes[1].innerHTML = movie.sortableName();
-    //tr.childNodes[1].innerHTML = movie.sortableName();
-    //tr.childNodes[2].innerHTML = movie.genre;
-
-    /*
-    var table = document.getElementById("movieTable");
-
-    //var row = parseInt(movie.id) - 1000;
-    document.getElementById("movieTable").rows[row].cells[0].innerHTML = movie.year;
-    document.getElementById("movieTable").rows[row].cells[1].innerHTML = movie.sortableName();
-    if (movie.genre === 0) {
-        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Comedy";
-    } else if (movie.genre === 1) {
-        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Drama";
-    } else if (movie.genre === 2) {
-        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Action";
-    } else if (movie.genre === 3) {
-        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Romance";
-    } else if (movie.genre === 4) {
-        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Animation";
-    } else if (movie.genre === 5) {
-        document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Western";
-    } else document.getElementById("movieTable").rows[row].cells[2].innerHTML = "Science Fiction";
-    */
 }
-
-
 
 function clearInputForm() {
     // Hide the form, show the movie list.
-    document.getElementById('movieEditArea').style.display = 'none';
-    document.getElementById('movieDisplayArea').style.display = 'block';
+    $("#movieEditArea").hide();
+    $("#movieDisplayArea").show();
+    $("#createBtn").show();
 
     var form = document.forms["editForm"];
 
     form.nameEdit.value = "";
-    document.getElementById("nameError").innerHTML = "";
+    $("#nameError").text("");
 
     form.yearEdit.value = "";
-    document.getElementById("yearError").innerHTML = "";
+    $("#yearError").text("");
 
     form.GRated.checked = false;
     form.PGRated.checked = false;
     form.PG13Rated.checked = false;
     form.RRated.checked = false;
-    document.getElementById("ratingError").innerHTML = "";
+    $("#ratingError").text("");
 
     form.movieGenre.selectedIndex = -1;
-    document.getElementById("genreError").innerHTML = "";
+    $("#genreError").text("");
 
     form.watched.checked = false;
-    document.getElementById("watchedError").innerHTML = "";
+    $("#watchedError").text("");
 }
