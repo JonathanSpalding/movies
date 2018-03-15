@@ -82,7 +82,11 @@ function onEditBtnClicked(movie) {
     $("#movieDisplayArea").hide();
     $("#createBtn").hide();
     $("#movieEditArea").show();
-    $("#updateBtn").show();
+    //$("#updateBtn").show();
+    $("#updateBtn")
+        .css("display", "inline")
+        .off("click")
+        .click(function() {onUpdateBtnClicked(movie.id)});
     // Set the Update button's onclick handler
     var updateBtn = $("#updateBtn");
     $(updateBtn).click(function () { onUpdateBtnClicked(movie.id)});
@@ -190,8 +194,8 @@ function addTableItem(movie) {
 
     cell = row.insertCell(2);
     if (movie.genre === 0) {
-        $("#movieTable td:contains('a')").html("hello");  
-        //cell.innerHTML = "Comedy";
+        //$("#movieTable td:contains('a')").html("hello");  
+        cell.innerHTML = "Comedy";
     } else if (movie.genre === 1) {
         cell.innerHTML = "Drama";
     } else if (movie.genre === 2) {
@@ -205,9 +209,9 @@ function addTableItem(movie) {
     } else cell.innerHTML = "Science Fiction";
 
     cell = row.insertCell(3);
-    cell.innerHTML = "<button type='button' id='btnEdit" + movie.id + "'>Edit</button>";
+    cell.innerHTML = "<button type='button' id='btnEdit" + movie.id + "' class = 'btn btn-sm btn-info'>Edit</button>";
     cell = row.insertCell(3);
-    cell.innerHTML = "<button type = 'button' id = 'btnDelete" + movie.id + "'>Delete</button>";
+    cell.innerHTML = "<button type = 'button' id = 'btnDelete" + movie.id + "' class = 'btn btn-sm btn-danger'>Delete</button>";
     
     // Wire up handlers for the new buttons. 
     $('#btnEdit' + movie.id).click(function() { onEditBtnClicked(movie.id) });
@@ -230,7 +234,9 @@ function clearInputForm() {
     // Hide the form, show the movie list.
     $("#movieEditArea").hide();
     $("#movieDisplayArea").show();
-    $("#createBtn").show();
+    //$("#createBtn").show();
+    $("#createBtn").css("display", "inline");
+    $("#saveBtn").css("display", "none");
 
     var form = document.forms["editForm"];
 
